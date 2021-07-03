@@ -1,0 +1,70 @@
+﻿@using Domain.Models
+@using Domain.Enums
+@{
+    ViewData["Title"] = "Home Page";
+    List<Region> topRegions = ViewBag.topRegions;
+    List<string> codeList = ViewBag.codeList;
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome to COVID-19</h1>
+    <div class="col-12">
+        <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group" role="group" aria-label="First group">
+                <div class="btn-group me-3">
+                    <button class="btn btn-secondary dropdown-toggle rounded-left rounded-right fs-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                       Regions
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Region</a></li>
+                        @foreach (var code in codeList)
+                        {
+                            <li><a class="dropdown-item" href="@Url.Action("Province", "Home", new { code = code})">@code</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <button type="button" class="btn btn-primary rounded-left rounded-right fs-5">Report</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="btn-group rounded-pill" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked onclick="location.href = ''">
+                    <a target="_blank" href="@Url.Action("ExportData", "Home", new { type = ExportType.XML})"><label class="btn btn-outline-primary rounded-left fs-5" for="btnradio1">XML</label></a>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <a target="_blank" href="@Url.Action("ExportData", "Home", new { type = ExportType.JSON})"><label class="btn btn-outline-primary fs-5" for="btnradio2">JSON</label></a>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                    <a target="_blank" href="@Url.Action("ExportData", "Home", new { type = ExportType.CSV})"><label class="btn btn-outline-primary rounded-right fs-5" for="btnradio3">CSV</label></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="col-12">
+        <table class="table table-borderless border">
+            @{
+                if (topRegions != null && topRegions.Count > 0)
+                {
+                    <thead>
+                    <tr>
+                        <th scope="col">REGION</th>
+                        <th scope="col">CASES</th>
+                        <th scope="col">DEATHS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var region in topRegions)
+                    {
+                        <tr>
+                            <th>@region.Name</th>
+                            <td>@region.Confirmed.ToString("###,###,####")</td>
+                            <td>@region.Deaths.ToString("###,###,####")</td>
+                        </tr>
+                    }
+                    </tbody>
+                }
+            }
+        </table>
+    </div>
+</div>
