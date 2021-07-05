@@ -4,7 +4,6 @@ using Covid_19.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +11,6 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Domain.Common;
 using Domain.Enums;
-using Domain.Models;
 using Domain.Models.Export;
 using Domain.Services;
 using Microsoft.Extensions.Options;
@@ -42,11 +40,17 @@ namespace Covid_19.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Province(string code)
+        [HttpPost]
+        public async Task<IActionResult> Index(string code, string jsonCodeList)
         {
+            if (string.IsNullOrEmpty(code))
+            {
+                return await Index();
+            }
             var topProvinces = await _reportService.GetProvincesByRegion(code);
             ViewBag.topProvinces = topProvinces;
             ViewBag.code = code;
+            ViewBag.codeList = JsonConvert.DeserializeObject<List<string>>(jsonCodeList);
             return View();
         }
 
@@ -90,8 +94,6 @@ namespace Covid_19.Controllers
             }
             return File(dataToExport, exportFile.FileType, exportFile.FileName);
         }
-
-
 
         [HttpGet]
         public async Task<FileResult> ExportDataProvince(ExportType type, string code)

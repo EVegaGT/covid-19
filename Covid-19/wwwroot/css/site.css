@@ -56,6 +56,26 @@ a {
     text-decoration: none; /* no underline */
 }
 
+.main-btn-padding {
+    padding-top: 0 !important;
+    padding-bottom: 0.25rem !important;
+    background-color: #ccc;
+    color: black;
+    border-color: gray;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.main-menu-borde {
+    border-color: gray;
+    border-style: solid none solid none;
+    padding: 0.25rem;
+}
+
+th {
+    font-weight: normal;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
